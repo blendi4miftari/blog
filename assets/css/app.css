@@ -1,0 +1,12 @@
+/* assets/css/app.css */
+@import "tailwindcss";
+
+/* (optional) set design tokens with v4's @theme */
+@theme {
+  --color-brand-500: oklch(0.62 0.2 240);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* (optional) if Tailwind misses some files, explicitly register sources */
+// @source "../**/*.php";
+// @source "../assets/**/*.{js,ts,jsx,tsx}"

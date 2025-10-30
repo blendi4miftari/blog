@@ -1,15 +1,25 @@
 <?php
+    function generatepress_theme_scripts() {
 
-    function generatepress_child_enqueue_styles() {
-        // Stilizimi i parentit me u load i pari
-        wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+     wp_enqueue_style( 'output', get_stylesheet_directory_uri() . '/dist/output.css', array() );
 
-        wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style')); // eshte e n varte prej stilizimit t parentit n menyre qe me u load mas tij
+    }   
 
-        wp_enqueue_style('tailwindcss', get_stylesheet_directory_uri() . '/src/output.css', array('parent-style'), '4.0.0' );
+    add_action( 'wp_enqueue_scripts', 'generatepress_theme_scripts' );
 
-    }
+    // Add custom class to <li>
+    add_filter( 'nav_menu_css_class', function($classes, $item, $args) {
+        if (property_exists($args, 'list_item_class') && !empty($args->list_item_class)) {
+            $classes[] = $args->list_item_class;
+        }
+        return $classes;
+    }, 10, 3);
 
-    add_action('wp_enqueue_scripts', 'generatepress_child_enqueue_styles');
-
-
+    // Add custom class to <a>
+    add_filter( 'nav_menu_link_attributes', function($atts, $item, $args) {
+        if (property_exists($args, 'link_class') && !empty($args->link_class)) {
+            $atts['class'] = $args->link_class;
+        }
+        return $atts;
+    }, 10, 3);
+   
