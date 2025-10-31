@@ -49,7 +49,7 @@ do_action( 'generate_before_header' );
 	 * Items centered vertically with 1rem padding on x-axis.
 	 */
 	?>
-	<div class="container mx-auto flex items-center px-4">
+	<div class="container mx-auto flex items-center px-4 mt-4">
 		<?php
 		/**
 		 * Logo Section
@@ -113,3 +113,4 @@ do_action( 'generate_after_header' );
  * @since 0.1
  */
 do_action( 'generate_inside_container' );
+

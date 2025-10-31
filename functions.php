@@ -22,4 +22,27 @@
         }
         return $atts;
     }, 10, 3);
+
+    add_filter( 'generate_parse_attr', function( $attributes, $context ) {
+        if ( 'inside-article' === $context ) {
+            $attributes['class'] .= ' bg-gray-700 p-8 shadow-lg'; // Replace with your Tailwind classes
+        }
+        return $attributes;
+    }, 10, 2 );
    
+
+    function custom_excerpt_more($more) {
+        return ' <a class="inline-block bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 mt-3" href="' . get_permalink() . '">Read More →</a>';
+    }
+    add_filter('excerpt_more', 'custom_excerpt_more');
+
+    function child_theme_scripts() {
+        wp_enqueue_script(
+            'modal-comments',
+            get_stylesheet_directory_uri() . '/modal.js',
+            array(), 
+            '1.0',
+            true 
+        );
+    }
+    add_action('wp_enqueue_scripts', 'child_theme_scripts');
