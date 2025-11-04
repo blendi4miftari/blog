@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === modal) closeBtn?.click()
   })
 
+  // Reply
   document.addEventListener("click", e => {
     const link = e.target.closest(".comment-reply-link")
     if (!link) return
@@ -61,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ?.scrollIntoView({ behavior: "smooth" })
   })
 
+  // Form submit
   commentForm.addEventListener("submit", async e => {
     e.preventDefault()
 
@@ -110,6 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
+  // Helpers
   function setHidden(name, value) {
     let input = commentForm.querySelector(`input[name="${name}"]`)
     if (!input) {
