@@ -39,7 +39,6 @@
 
 
     add_action( 'wp_enqueue_scripts', function() {
-        // Only load on singular pages OR archive pages where you show the modal
         if ( ! comments_open() ) {
             return;
         }
@@ -47,7 +46,7 @@
         wp_enqueue_script(
             'ajax-comments',
             get_stylesheet_directory_uri() . '/assets/js/ajax-comments.js',
-            array(),          // no jQuery needed – we use native fetch
+            array(),          
             '1.1',
             true
         );
@@ -62,19 +61,16 @@
         );
     } );
     
-    /* -------------------------------------------------
-       ONE AJAX handler – works for logged-in & guests
-       ------------------------------------------------- */
+    
     add_action( 'wp_ajax_ajax_comment_submit', 'ajax_comment_submit_handler' );
     add_action( 'wp_ajax_nopriv_ajax_comment_submit', 'ajax_comment_submit_handler' );
     
    function ajax_comment_submit_handler() {
-    // 1. Verify nonce (don't die)
     if ( ! check_ajax_referer( 'ajax_comment_nonce', 'nonce', false ) ) {
         wp_send_json_error( [ 'message' => 'Security check failed.' ] );
     }
 
-    // 2. Get data
+
     $post_id = intval( $_POST['comment_post_ID'] ?? 0 );
     $parent  = intval( $_POST['comment_parent'] ?? 0 );
     $content = wp_kses_post( $_POST['comment'] ?? '' );
@@ -84,7 +80,7 @@
         wp_send_json_error( [ 'message' => 'Missing post ID or comment content.' ] );
     }
 
-    // 3. Build comment data
+    
     $commentdata = [
         'comment_post_ID'      => $post_id,
         'comment_parent'       => $parent,
@@ -106,7 +102,7 @@
         $commentdata['comment_author_url']   = esc_url_raw( $_POST['url'] ?? '' );
     }
 
-    // 4. Insert comment
+    
     $comment_id = wp_new_comment( $commentdata );
 
     if ( is_wp_error( $comment_id ) ) {
@@ -116,15 +112,15 @@
     $comment = get_comment( $comment_id );
     $is_approved = (int) $comment->comment_approved === 1;
 
-    // 5. Render HTML – exact GeneratePress default (avatar 42px)
+    
     ob_start();
-    $GLOBALS['comment'] = $comment; // Required for functions like comment_text()
+    $GLOBALS['comment'] = $comment; 
     ?>
     <li <?php comment_class( '', $comment ); ?> id="comment-<?php comment_ID(); ?>">
         <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
             <footer class="comment-meta">
                 <div class="comment-author vcard">
-                    <?php echo get_avatar( $comment, 42 ); // GeneratePress avatar size ?>
+                    <?php echo get_avatar( $comment, 42 ); ?>
                     <?php printf( '<b class="fn">%s</b> <span class="says"></span>', get_comment_author_link( $comment ) ); ?>
                 </div>
                 <div class="comment-metadata">
@@ -159,7 +155,7 @@
     <?php
     $comment_html = ob_get_clean();
 
-    // 6. Success – always JSON
+    
     wp_send_json_success( [
         'comment_html'   => $comment_html,
         'comment_id'     => $comment->comment_ID,
@@ -168,6 +164,6 @@
     ] );
 }
 
-// Hook it (add if missing)
+
 add_action( 'wp_ajax_ajax_comment_submit', 'ajax_comment_submit_handler' );
 add_action( 'wp_ajax_nopriv_ajax_comment_submit', 'ajax_comment_submit_handler' );

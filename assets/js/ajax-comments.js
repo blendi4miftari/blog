@@ -36,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     e.preventDefault()
 
-    // Get post ID from closest data-post-id (button or container)
     const postIdEl =
       link.closest("[data-post-id]") || document.querySelector("[data-post-id]")
     const postId = postIdEl?.dataset.postId
@@ -49,17 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
 
-    // Set both hidden fields
     setHidden("comment_post_ID", postId)
     setHidden("comment_parent", parentId)
 
-    // Update title
     const title = document.getElementById("reply-title")
     if (title) {
       title.textContent = `Reply to ${link.dataset.replyto || "comment"}`
     }
 
-    // Scroll to form
     document
       .getElementById("commentform")
       ?.scrollIntoView({ behavior: "smooth" })
@@ -114,9 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  /* --------------------------------------------------------------
-       Helper: inject hidden inputs
-       -------------------------------------------------------------- */
   function setHidden(name, value) {
     let input = commentForm.querySelector(`input[name="${name}"]`)
     if (!input) {
