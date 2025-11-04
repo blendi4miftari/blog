@@ -57,13 +57,16 @@
             <div class="grid-2">
                 <a href="<?php comments_link(); ?>"
                 class="inline-block no-underline bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 hover:text-white transition-colors duration-200"
+                data-post-id="<?php the_ID(); ?>"
                 >
+                <span class="comment-count pointer-events-none">
                     <?php
                         $comments_count = get_comments_number();
                         echo $comments_count == 1
                             ? '1 Comment'
                             : $comments_count . ' Comments';
                     ?>
+                </span>
                 </a>
                 <button
                     class="open-comment-modal inline-block no-underline bg-gray-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200"
